@@ -68,6 +68,63 @@ public class BusinessLogicResources {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON )
+    @Path("/persons/{personId}/{measureType}/goals")
+    public Response getGoalsByMeasure(@PathParam("personId") int idPerson, @PathParam("measureType") String measureType) {
+    	Response goals = blModel.getPersonGoalsByMeasure(idPerson, measureType);
+        if (goals == null) {
+        	throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return goals;
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON )
+    @Path("/persons/{personId}/goals/{goalId}")
+    public Response getSingleGoal(@PathParam("personId") int idPerson, @PathParam("goalId") int goalId) {
+    	Response goal = blModel.getSingleGoal(idPerson, goalId);
+        return goal;
+    }
+    
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON )
+    @Path("/persons/{personId}/goals/{goalId}")
+    public Response deleteGoal(@PathParam("personId") int idPerson, @PathParam("goalId") int goalId) {
+    	Response response = blModel.deleteGoal(idPerson, goalId);
+        return response;
+    }
+    
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON )
+    @Path("/persons/{personId}/timelines")
+    public Response getTimelines(@PathParam("personId") int idPerson) {
+    	Response timelines = blModel.getPersonTimelines(idPerson);
+        if (timelines == null) {
+        	throw new WebApplicationException(Response.Status.NOT_FOUND);
+        }
+        return timelines;
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON )
+    @Path("/persons/{personId}/timelines/{timelineId}")
+    public Response getSingleTimeline(@PathParam("personId") int idPerson, @PathParam("timelineId") int timelineId) {
+    	Response timeline = blModel.getSingleTimeline(idPerson, timelineId);
+        return timeline;
+    }
+    
+    @DELETE
+    @Consumes(MediaType.APPLICATION_JSON )
+    @Path("/persons/{personId}/timelines/{timelineId}")
+    public Response deleteTimeline(@PathParam("personId") int idPerson, @PathParam("timelineId") int timelineId) {
+    	Response response = blModel.deleteTimeline(idPerson, timelineId);
+        return response;
+    }
+    
+    
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON )
     @Path("/measuretypes")
     public Response getMeasureTypes() {
     	Response measureTypes = blModel.getMeasureTypes();
@@ -97,6 +154,7 @@ public class BusinessLogicResources {
         	String firstname = personObj.getString("firstname");
         	String lastname = personObj.getString("lastname");
     		
+        	// If goal reached, get joke
     		tempResult = blModel.getJoke(firstname, lastname);
     		
         	String resultString = tempResult.readEntity(String.class);

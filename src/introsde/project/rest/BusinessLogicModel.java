@@ -51,6 +51,33 @@ public class BusinessLogicModel {
     	Response result = storageService.path("/persons/"+personId+"/"+measureType+"/goals").request().accept(acceptType).get();
     	return result;
     }
+    
+	public Response getSingleGoal(int personId, int goalId) {
+		Response result = storageService.path("/persons/"+personId+"/goals/"+goalId).request().accept(acceptType).get();
+    	return result;
+	}
+
+	public Response deleteGoal(int personId, int goalId) {
+		Response result = storageService.path("/persons/"+personId+"/goals/"+goalId).request().accept(acceptType).delete();
+		return result;
+	}
+    
+    public Response getPersonTimelines(int personId) {
+    	Response result = storageService.path("/persons/"+personId+"/timelines").request().accept(acceptType).get();
+    	return result;
+    }
+    
+
+	public Response getSingleTimeline(int personId, int timelineId) {
+		Response result = storageService.path("/persons/"+personId+"/timelines/"+timelineId).request().accept(acceptType).get();
+		return result;
+	}
+
+	public Response deleteTimeline(int personId, int timelineId) {
+		Response result = storageService.path("/persons/"+personId+"/timelines/"+timelineId).request().accept(acceptType).delete();
+		return result;
+	}
+    
 
     public Response getMeasureTypes() {
     	Response result = storageService.path("/measuretypes").request().accept(acceptType).get();
@@ -114,12 +141,12 @@ public class BusinessLogicModel {
 
     private static URI getStorageURI() {
         return UriBuilder.fromUri(
-                "http://localhost:5700/").build();
+                "https://storage-introsde.herokuapp.com/").build();
     }
 
     private static URI getProcessURI() {
         return UriBuilder.fromUri(
-                "http://localhost:7000/").build();
+                "https://processcentric-introsde.herokuapp.com/").build();
     }
 
 }

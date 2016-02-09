@@ -68,17 +68,6 @@ public class BusinessLogicResources {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON )
-    @Path("/persons/{personId}/{measureType}/goals")
-    public Response getGoalsByMeasure(@PathParam("personId") int idPerson, @PathParam("measureType") String measureType) {
-    	Response goals = blModel.getPersonGoalsByMeasure(idPerson, measureType);
-        if (goals == null) {
-        	throw new WebApplicationException(Response.Status.NOT_FOUND);
-        }
-        return goals;
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON )
     @Path("/persons/{personId}/goals/{goalId}")
     public Response getSingleGoal(@PathParam("personId") int idPerson, @PathParam("goalId") int goalId) {
     	Response goal = blModel.getSingleGoal(idPerson, goalId);

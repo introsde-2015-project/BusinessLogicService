@@ -89,14 +89,21 @@ public class BusinessLogicModel {
     	return result;
     }
     
-    public boolean checkGoal(int personId, String measureType, int measureId) {
-    	boolean goalReached = false;
+    // Return -1 if no goals exist, 0 if not reached, 1 if reached
+    public int checkGoal(int personId, String measureType, int measureId) {
+    	int GOAL_NOT_EXIST = -1;
+    	int GOAL_NOT_REACHED = 0;
+    	int GOAL_REACHED = 1;
+    	int goalReached = GOAL_NOT_REACHED;
     	
     	Response measure = storageService.path("/persons/"+personId+"/"+measureType+"/"+measureId).request().accept(acceptType).get();
     	Response goals = this.getPersonGoalsByMeasure(personId, measureType);
     	
     	String goalsString = goals.readEntity(String.class);
     	JSONArray goalsArray = new JSONArray(goalsString);
+    	if (goalsArray.length() == 0) {
+    		return GOAL_NOT_EXIST;
+    	}
     	
     	String measureString = measure.readEntity(String.class);
     	JSONObject measureJson = new JSONObject(measureString);
@@ -105,11 +112,11 @@ public class BusinessLogicModel {
     		int measureValue = measureJson.getInt("value");
     		if (measureType.equals("calories")) {
     			if (measureValue < goalValue) {
-    				goalReached = true;
+    				goalReached = GOAL_REACHED;
     			}
     		} else {
     			if (measureValue > goalValue) {
-    				goalReached = true;
+    				goalReached = GOAL_REACHED;
     			}
     		}
     	}

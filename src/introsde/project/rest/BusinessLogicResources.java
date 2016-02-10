@@ -132,10 +132,13 @@ public class BusinessLogicResources {
     @Produces(MediaType.APPLICATION_JSON )
     @Path("/persons/{personId}/{measureType}/{measureId}/checkgoal")
     public Response checkGoal(@PathParam("personId") int idPerson, @PathParam("measureType") String measureType, @PathParam("measureId") int mid) {
-    	boolean goalReached = blModel.checkGoal(idPerson, measureType, mid);
+    	int goalReached = blModel.checkGoal(idPerson, measureType, mid);
+    	if (goalReached == -1) {
+    		return null;
+    	}
     	Response tempResult = null;
     	JSONObject resultObj = null;
-    	if (goalReached) {
+    	if (goalReached == 1) {
     		Response person = blModel.getPersonById(idPerson);
     		
         	String personString = person.readEntity(String.class);
